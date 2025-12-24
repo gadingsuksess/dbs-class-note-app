@@ -65,7 +65,9 @@
         }
 
         .input-login a{
-            margin-left: 181px;
+            margin-right: 181px;
+            margin-top: 8px;
+            display: inline-block;
             text-decoration: none;
         }
 
@@ -97,52 +99,68 @@
 <body>
     <div class="container">
         <i class="hgi hgi-stroke hgi-property-edit logo"></i>
-        <h1>Note Keep</h1>
-        <p>Enter your email and password to access your notes</p>
+        <h1>Get Started</h1>
+        <p>Create a free account to save your notes and access them anywhere</p>
         
         <div class="input-login">
             <label>Email Addreas</label>
             <input id="input-email" type="email" placeholder="name@example.com">
         </div> 
         <div class="input-login">
-            <label>Password</label> <a href="">Forgot Password</a>
+            <label>Password</label> 
             <input id="input-password" type="password" placeholder="enter password">
+            <a href="">Don't have an account?</a>
+        </div>
+        <div class="input-login">
+            <label>Confirm Password</label> 
+            <input id="input-confirm-password" type="password" placeholder="Re-enter password">
         </div>
         
         <div class="button">
-            <button type="button" onclick="login()">Logn in</button>
+            <button type="button" onclick="tambahuser()">Registrasi</button>
         </div>
 
         <p>
-            Don't have an account? <a href="registrasi..html">Sign up</a> 
+            Already a member <a href="index.html">Logn in</a> 
         </p> 
     </div>
-
     <script>
-        function login() {
-            // ambil elemen email & html dari html
+        // let users = [];
+
+        // function
+        function tambahuser() {
+            // mengambil elemen html
+            // istilah ya DOM
             let inemail = document.getElementById("input-email")
             let inpassword = document.getElementById("input-password")
+            let inconfirm = document.getElementById("input-confirm-password")
 
-            // ambil data dari local storage
-            let userdb = getFromStorage ()
-
-            // if email == userdb.email
-            if (
-                inemail.value == userdb.email &&
-                inpassword.value == userdb.password
-            ){
-                alert("Login berhasil !")
-                window.location.href = './notes.html'
-            } else {
-                alert("Email atau Password salah!")
+            // Validasi
+            // cek password
+            if(inpassword.value != inconfirm.value) {
+                alert ("Password tidak sesuai !"); return
             }
-           
-        }
 
-        function getFromStorage () {
-            let userInStorage = localStorage.getItem('user')
-            return JSON.parse(userInStorage)
+            // melihat value dari object email
+            console.log(inemail.value)
+            console.log(inpassword.value)
+            console.log(inconfirm.value)
+
+            let newuser = {
+                email: inemail.value,
+                password: inpassword.value,
+                confirm: inconfirm.value
+            }
+
+            saveToStorage(newuser)
+            // users.push(newuser)
+
+            alert("Registrasi berhasil")
+            window.location.href = './index.html'
+        }
+        function saveToStorage(datauser) {
+            let stringDataUser = JSON.stringify(datauser);
+            localStorage.setItem('user', stringDataUser)
         }
     </script>
 </body>
