@@ -23,7 +23,8 @@
             text-align: center;
             margin-left: auto;
             margin-right: auto;
-            margin-top: 80px;   
+            margin-top: 80px;     
+            background-color: white;
         }
 
         .header{
@@ -31,6 +32,7 @@
             display: flex;
             justify-content:space-between;
             align-items: center;
+            background-color: white;
         }
 
         .logo-keluar {
@@ -58,7 +60,7 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
-            background-color: #FFFFFF;
+            background-color: white;
         }
 
         .create {
@@ -67,6 +69,7 @@
             display: flex;   
             gap: 10px;
             align-items: center;
+
         }
 
         .logo {
@@ -158,11 +161,11 @@
         .list-riwayat{
             display: flex;
             flex-direction: column;
-            gap: 20px;
             padding: 24px;
             border-radius: 5px; 
             border: 1px solid #7E7E7E;
             background-color: #F8FAFC;
+            margin-bottom: 20px;
         }
 
         .keterangan span {
@@ -181,11 +184,10 @@
                 <h2>Hi, student@uni.edu</h2>
             </div>
             <div class="logo-keluar">
-                <i class="hgi hgi-stroke hgi-logout-circle-02"></i>
+                <i onclick="logout()" class="hgi hgi-stroke hgi-logout-circle-02"></i>
             </div>
         </div>
        
-
         <div class="container-create">
             <div class="create">
                 <i class="hgi hgi-stroke hgi-property-edit logo"></i>
@@ -193,21 +195,25 @@
             </div>
 
             <div class="note-title">
-                <input type="text" placeholder="Note Title">
+                <input type="text" placeholder="Note Title" id="input-judul">
             </div>
 
             <div class="note-isi"> 
-                <textarea name="" id="" placeholder="Write your thoughts here..."></textarea>
+                <textarea name="" id="input-content" placeholder="Write your thoughts here..."></textarea>
             </div>
                 
-
             <div class="note-button">
-                <button type="button">+ Add Note</button>
+                <button onclick="tambahcatatan()" type="button">+ Add Note</button>
             </div>
+        </div>  
 
             <p class="judul-riwayat">Your notes</p>
 
-            <div class="list-riwayat">
+            <div id="wadah">
+
+            </div>
+
+            <!-- <div class="list-riwayat">
                 <div class="riwayat">
                     <div class="react">
                         <div class="react-tanggal">
@@ -226,27 +232,85 @@
                     </div>
                 </div>
             </div>
-            
-            <div class="list-riwayat">
-                <div class="riwayat">
-                    <div class="react">
-                        <div class="react-tanggal">
-                            <h2>React Hooks Study</h2>
-                            <p>Oct 24, 2025</p>
-                        </div>
-                        <div class="icon">
-                            <i class="hgi hgi-stroke hgi-delete-02 icondelete"></i>
-                            <i class="hgi hgi-stroke hgi-pencil-edit-01 icontulis"></i>
-                        </div>
-                    </div>
-
-                    <div class="keterangan">
-                            <span>Remember to review useEffect dependencies array. Ideally, 
-                            include all variables used inside the effect</span>
-                    </div>
-                </div>
-            </div>
-        </div>  
+             -->
+           
+        
     </div>
+    <script>
+        let daftarCatatan = [];
+
+        function tambahcatatan() {
+        // ambil
+        let injudul = document.getElementById("input-judul");
+        let incontent = document.getElementById("input-content");
+
+        let date = new Date(); 
+			let dd = date.getDate(); 
+			let mm = date.getMonth() + 1; 
+			let yyyy = date.getFullYear(); 
+			let newDate = dd + "-" + mm + "-" +yyyy;
+
+        let newcatatan = {
+            judul: injudul.value,
+            content: incontent.value,
+            tanggal: newDate
+        }
+
+        // masukin ke array
+        daftarCatatan.push(newcatatan);
+
+        // panggil tampilkanCatatan
+        tampilkanCatatan()
+
+        alert("Catatan berhasil ditambahkan")
+        }
+
+       
+         function tampilkanCatatan() {
+            // ambil dom
+            let wadah = document.getElementById('wadah')
+            wadah.innerHTML = ``
+            for (let i = 0 ; i < daftarCatatan.length; i++){
+                wadah.innerHTML += `<div class="list-riwayat">
+                <div class="riwayat">
+                    <div class="react">
+                        <div class="react-tanggal">
+                            <h2>${daftarCatatan[i].judul}</h2>
+                            <p>${daftarCatatan[i].tanggal}</p>
+                        </div>
+                        <div class="icon">
+                            <i onclick="hapusCatatan(${i})" class="hgi hgi-stroke hgi-delete-02 icondelete"></i>
+                            <i class="hgi hgi-stroke hgi-pencil-edit-01 icontulis"></i>
+                        </div>
+                    </div>
+
+                    <div class="keterangan">
+                            <span>${daftarCatatan[i].content}</span>
+                    </div>
+                </div>
+            </div>
+            `
+            }
+
+            let injudul = document.getElementById("input-judul")
+            let incontent = document.getElementById("input-content")
+
+            injudul.value = null;
+            incontent.value = null;
+
+
+         }
+         function logout(){
+            window.location.href = './index.html'
+         }
+
+
+          function hapusCatatan(hapus) {
+            daftarCatatan.splice(hapus,1)
+            tampilkanCatatan()
+        }
+
+        
+    </script>
 </body>
 </html>

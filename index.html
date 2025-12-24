@@ -120,9 +120,12 @@
 
     <script>
         function login() {
-            // ambil elemen email & html dari html
+            // ambil elemen email & pasword dari html
             let inemail = document.getElementById("input-email")
             let inpassword = document.getElementById("input-password")
+
+            console.log(inemail.value)
+            console.log(inpassword.value)
 
             // ambil data dari local storage
             let userdb = getFromStorage ()
@@ -134,6 +137,17 @@
             ){
                 alert("Login berhasil !")
                 window.location.href = './notes.html'
+            } else if(
+                inemail.value == userdb.email &&
+                inpassword.value != userdb.password
+            )
+            {
+                alert("Password salah!")
+            } else if(
+                inemail.value != userdb.email 
+            ) 
+            {
+                alert("Email tidak ditemukan!")
             } else {
                 alert("Email atau Password salah!")
             }
