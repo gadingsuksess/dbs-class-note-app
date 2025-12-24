@@ -23,7 +23,7 @@
             text-align: center;
             margin-left: auto;
             margin-right: auto;
-            margin-top: 80px;     
+            margin-top: 80px;    
         }
 
         .header{
@@ -53,20 +53,19 @@
         }
 
         .container-create{
-            margin-top: -40px;
-            height: 100%;
+            width: 100%;
             display: flex;
             flex-direction: column;
+            margin-top: 20px;
             gap: 15px;
+            background-color: #F8FAFC;
         }
 
         .create {
-            margin-top: 80px;
             padding: 20px;
             display: flex;   
             gap: 10px;
             align-items: center;
-
         }
 
         .logo {
@@ -200,7 +199,7 @@
             </div>
                 
             <div class="note-button">
-                <button id="btnedit" onclick="tambahcatatan()" type="button">+ Add Note</button>
+                <button id="btnadd" onclick="tambahcatatan()" type="button">+ Add Note</button>
             </div>
         </div>  
 
@@ -249,12 +248,30 @@
 			let yyyy = date.getFullYear(); 
 			let newDate = dd + "-" + mm + "-" +yyyy;
 
-        let newcatatan = {
+        if(edit) {
+            daftarCatatan[onedit].judul = injudul.value;
+            daftarCatatan[onedit].content = incontent.value;
+            daftarCatatan[onedit].tanggal = newDate;
+
+            alert("Catatan berhasil diubah!")
+
+            let btnedit = document.getElementById("btnadd");
+            let spanedit = document.getElementById("spanedit");
+            btnedit.innerText = '+ Add Note';
+            spanedit.innerText = 'Create New Note';
+            edit = false;
+            onedit = null;
+            tampilkanCatatan();
+        } else{
+            let newcatatan = {
             judul: injudul.value,
             content: incontent.value,
             tanggal: newDate
         }
 
+        }
+
+    
         // masukin ke array
         daftarCatatan.push(newcatatan);
 
@@ -310,7 +327,7 @@
             let onedit = index;
             let sedangedit = true;
 
-            let btnedit = document.getElementById("btnedit");
+            let btnadd = document.getElementById("btnedit");
             let editspan = document.getElementById("editspan");
 
             let injudul = document.getElementById("input-judul");
@@ -319,8 +336,8 @@
             injudul.value = daftarCatatan[index].judul
             incontent.value = daftarCatatan[index].content
 
-            btnedit = 'save'
-            editspan = 'sedangedit'
+            btnedit.innerText = 'save';
+            editspan.innerText = 'sedangedit';
 
          }
          
