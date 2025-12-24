@@ -57,6 +57,7 @@
 
         .container-create{
             margin-top: -40px;
+            height: 100%;
             display: flex;
             flex-direction: column;
             gap: 15px;
@@ -191,7 +192,7 @@
         <div class="container-create">
             <div class="create">
                 <i class="hgi hgi-stroke hgi-property-edit logo"></i>
-                <span>Create new note</span>
+                <span id="editspan">Create new note</span>
             </div>
 
             <div class="note-title">
@@ -203,7 +204,7 @@
             </div>
                 
             <div class="note-button">
-                <button onclick="tambahcatatan()" type="button">+ Add Note</button>
+                <button id="btnedit" onclick="tambahcatatan()" type="button">+ Add Note</button>
             </div>
         </div>  
 
@@ -237,6 +238,8 @@
         
     </div>
     <script>
+        let onedit = null;
+        let sedangedit = false;
         let daftarCatatan = [];
 
         function tambahcatatan() {
@@ -280,7 +283,7 @@
                         </div>
                         <div class="icon">
                             <i onclick="hapusCatatan(${i})" class="hgi hgi-stroke hgi-delete-02 icondelete"></i>
-                            <i class="hgi hgi-stroke hgi-pencil-edit-01 icontulis"></i>
+                            <i onclick="edit(${i})" class="hgi hgi-stroke hgi-pencil-edit-01 icontulis"></i>
                         </div>
                     </div>
 
@@ -306,6 +309,23 @@
          function hapusCatatan(hapus) {
             daftarCatatan.splice(hapus,1)
             tampilkanCatatan()
+         }
+         function edit(index){
+            let onedit = index;
+            let sedangedit = true;
+
+            let btnedit = document.getElementById("btnedit");
+            let editspan = document.getElementById("editspan");
+
+            let injudul = document.getElementById("input-judul");
+            let incontent = document.getElementById("input-content");
+
+            injudul.value = daftarCatatan[index].judul
+            incontent.value = daftarCatatan[index].content
+
+            btnedit = 'save'
+            editspan = 'sedangedit'
+
          }
          
 
