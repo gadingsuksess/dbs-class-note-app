@@ -90,6 +90,10 @@
             background-color: #F8FAFC;
         }
 
+        .note-title input:hover{
+            border-color: #19C3E6;
+        }
+
         .note-isi textarea{
             width: 100%;
             height: 119px;
@@ -97,6 +101,10 @@
             border-radius: 5px; 
             border: 1px solid #7E7E7E;
             background-color: #F8FAFC;
+        }
+
+        .note-isi textarea:hover{
+            border-color: #19C3E6;
         }
 
         .note-button button{
@@ -177,7 +185,7 @@
         <div class="header">
             <div class="judul">
                 <p>DASHBOARD</p>
-                <h2>Hi, student@uni.edu</h2>
+                <h2 id="email">Hi, student@uni.edu</h2>
             </div>
             <div class="logo-keluar">
                 <i onclick="logout()" class="hgi hgi-stroke hgi-logout-circle-02"></i>
@@ -199,7 +207,7 @@
             </div>
                 
             <div class="note-button">
-                <button id="btnadd" onclick="tambahcatatan()" type="button">+ Add Note</button>
+                <button onclick="tambahcatatan()" id="btnadd" type="button">+ Add Note</button>
             </div>
         </div>  
 
@@ -233,8 +241,11 @@
         
     </div>
     <script>
-        let onedit = null;
-        let sedangedit = false;
+        let dataUser = JSON.parse(localStorage.getItem('user'));
+        document.getElementById("email").innerText = dataUser.email;
+
+        onedit = null;
+        sedangedit = false;
         let daftarCatatan = [];
 
         function tambahcatatan() {
@@ -242,43 +253,55 @@
         let injudul = document.getElementById("input-judul");
         let incontent = document.getElementById("input-content");
 
-        let date = new Date(); 
+        if (!injudul.value && !incontent.value){
+            return alert("Judul dan Catatan belum diisi!")
+        } 
+        else if (!injudul.value){
+            return alert("Judul belum diisi!")
+        } 
+        else if (!incontent.value){
+            return alert("Catatan belum diisi!")
+        }else{
+            let date = new Date(); 
 			let dd = date.getDate(); 
 			let mm = date.getMonth() + 1; 
 			let yyyy = date.getFullYear(); 
 			let newDate = dd + "-" + mm + "-" +yyyy;
 
-        if(edit) {
+        if(sedangedit) {
             daftarCatatan[onedit].judul = injudul.value;
             daftarCatatan[onedit].content = incontent.value;
             daftarCatatan[onedit].tanggal = newDate;
 
             alert("Catatan berhasil diubah!")
+            
 
-            let btnedit = document.getElementById("btnadd");
-            let spanedit = document.getElementById("spanedit");
-            btnedit.innerText = '+ Add Note';
-            spanedit.innerText = 'Create New Note';
-            edit = false;
+            let btnadd = document.getElementById("btnadd");
+            let editspan = document.getElementById("editspan");
+            btnadd.innerText = '+ Add Note';
+            editspan.innerText = 'Create New Note';
+            sedangedit = false;
             onedit = null;
             tampilkanCatatan();
+            return;
+
         } else{
             let newcatatan = {
             judul: injudul.value,
             content: incontent.value,
             tanggal: newDate
         }
-
-        }
-
-    
         // masukin ke array
         daftarCatatan.push(newcatatan);
 
         // panggil tampilkanCatatan
         tampilkanCatatan()
 
-        alert("Catatan berhasil ditambahkan")
+        alert("Catatan berhasil dibuat")
+
+        }
+
+        }
         }
 
        
@@ -307,12 +330,13 @@
             </div>
             `
             }
+            if(!sedangedit){
+                let injudul = document.getElementById("input-judul")
+                let incontent = document.getElementById("input-content")
 
-            let injudul = document.getElementById("input-judul")
-            let incontent = document.getElementById("input-content")
-
-            injudul.value = null;
-            incontent.value = null;
+                injudul.value = null;
+                incontent.value = null;
+            }
 
 
          }
@@ -324,23 +348,23 @@
             tampilkanCatatan()
          }
          function edit(index){
-            let onedit = index;
-            let sedangedit = true;
+            onedit = index;
+            sedangedit = true;
 
-            let btnadd = document.getElementById("btnedit");
+            let btnadd = document.getElementById("btnadd");
             let editspan = document.getElementById("editspan");
 
             let injudul = document.getElementById("input-judul");
             let incontent = document.getElementById("input-content");
 
-            injudul.value = daftarCatatan[index].judul
-            incontent.value = daftarCatatan[index].content
+            injudul.value = daftarCatatan[index].judul;
+            incontent.value = daftarCatatan[index].content;
 
-            btnedit.innerText = 'save';
+            btnadd.innerText = 'save';
             editspan.innerText = 'sedangedit';
 
          }
-         
+        
 
         
     </script>
